@@ -6,16 +6,16 @@ const Main = () =>{
         marginBottom: "10px",
         backgroundColor: "lightgreen",
         padding: "10px",
-        paddingTop: "20%"
+        
        
     };
     
     
     return(
         <div style={divStyle} className="d-flex column" >
-            
+            <img src="https://www.barkerandstonehouse.co.uk/media/homepage/news/news-bentallsinside.jpg" alt=""/>
                 
-               Main
+              
             
         </div>
     )

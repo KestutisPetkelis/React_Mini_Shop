@@ -1,5 +1,6 @@
 import './App.css';
 import { useState } from 'react';
+import { FaShoppingCart } from "react-icons/fa";
 
 import Main from './components/Main';
 import Shop from './components/Shop';
@@ -11,8 +12,9 @@ function App() {
     width: "100%",
     height: "100vh",
     border: "1px solid blue",
-    marginTop: "10px",
+    marginTop: "0px",
     marginBottom: "10px",
+    paddingRight: "21px",
     backgroundColor: "aliceblue"
    
   };
@@ -71,12 +73,15 @@ function App() {
       <div className="header d-flex">
         <div className='flex1'><button onClick={()=>change(1)}>Main</button></div>
         <div className='flex1'><button onClick={()=>change(2)}>Shop</button></div>
-        <div className='flex1'><button onClick={()=>change(3)}>Cart</button></div>
-
+          <div className='flex1 d-flex ali-center just-center'><button onClick={()=>change(3)}>Cart</button> 
+          
+          <FaShoppingCart/> <h3 className='pl-10'> {getArray.length}</h3>
+          
+        </div>
       </div>
       {getWindow===1 && <Main />}
       {getWindow===2 && <Shop products={products} buyItem={buyItem}/>}  
-      {getWindow===3 && <Cart boughtItems={getArray}/>}
+      {getWindow===3 && <Cart boughtItems={getArray} sum={getSum}/>}
             
     </div>
     
