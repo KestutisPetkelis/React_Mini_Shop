@@ -1,4 +1,5 @@
-const Cart = ({boughtItems, sum}) =>{
+//import { useState } from 'react';
+const Cart = ({boughtItems, sum, cart, add}) =>{
     const divStyle = {
         width: "100%",
         // height: "100%",
@@ -10,19 +11,28 @@ const Cart = ({boughtItems, sum}) =>{
         paddingTop: "40px"
        
     };
-    console.log( boughtItems)
-    
+    function countTotal() {
+        let sum = 0
+        cart.map(x => sum += x.price * x.quantity)
+        return sum.toFixed(2)
+    }
     return(
         <div style={divStyle} >
-            {boughtItems.map((x,index) =>
+            <h2>Total Sum: {countTotal()}</h2>
+
+            {cart.map((x,index) =>
                 <div className="card2 d-flex" key={index}>
                  <img src={x.image} alt=""/>
-                 <div>    
+                <div>    
                     <h3>{x.title}</h3>
                     <h3>Price: {x.price}</h3> 
-                    <h3> Quantity: </h3>
-                {/* <button onClick={()=>buyItem(index)}> Buy</button> */}
+                    <h3> Quantity: {x.quantity}</h3>
                 </div>
+                <div>
+                    <button onClick={()=> add(true, index)}>Add</button>
+                    <button onClick={()=> add(false, index)}>Remove</button>
+                </div>
+
             </div>
             )}
             <h3>Total: {sum}</h3>

@@ -1,3 +1,6 @@
+//  ***** su klaidom bet esme masyvo rusiavime ******* !!!!!!!!!!
+
+
 import './App.css';
 import { useState } from 'react';
 import { FaShoppingCart } from "react-icons/fa";
@@ -47,25 +50,71 @@ function App() {
     },
   ]
   
- 
-  const [getArray, setArray] = useState([]) // itemu, esanciu krepselyje ("cart") masyvas
+  const [getProducts, setProducts] = useState(products)
+  const [getArray, setArray] = useState([]) // visu itemu, esanciu krepselyje ("cart") masyvas
+  
+  const [getIndex, setIndex] =useState([])
+   
   const [getSum, setSum] = useState(1000)   // turimi pinigai
   const [getWindow,setWindow] = useState(1) // rodomu langu keitiklis
-  
+  const [getCart, setCart] = useState([])   // atfiltruotu itemu, esanciu krepselyje, masyvas
+
   const change = (num)  =>{
     setWindow(num)
   }
   function buyItem(index){
     
-    const newSum = getSum-products[index].price
+      const newSum = getSum-products[index].price
       if(newSum >= 0){
-      setArray([...getArray, products[index]])
-      setSum(newSum)
+
+        // ***** standartinis visu elementu sudejimas i masyva
+        setArray([...getArray, products[index]])
+        setSum(newSum)
+      
+        setIndex([...getIndex,index]) 
+
+        // **** atrenkam pasikartojamcius elementus su pasikartojimu skaiciumi
+        const currentProduct = getProducts[index] // pasizymim isrinkta produkta
+        const productExists = getCart.find(x => x.title === currentProduct.title) 
+        // pagal unikalu zymeni(pabvadinim a"title") patikrinam ar yra elementas masyva "true/false"
+
+        if(productExists) {           // jeigu yra "true"
+            const otherProducts = getCart.filter(x => x.title !== currentProduct.title) 
+                                      // ismetam produkta is masyvo, kad nesidubliuotu
+            productExists.quantity++  //  kieki padidinam +1
+            setCart([...otherProducts, productExists]) // pridedam elementa i masyva  
+        } else {                      // jeigu nerra "false"
+            currentProduct.quantity = 1   //  objektui pridedam "key" quantity ir nustatom reiksme "1"
+            setCart([...getCart, currentProduct]) // pridedam nauja elementa i masyva
+        }
+
+            
+      
     } else{
       alert("You have not enought money")
     }
-
   }
+
+   // funkcija prideti/atimt elementa is krepselio
+    
+  function addOrRemove(add, index) {
+    if(add) {
+        const newArray = getCart
+        getCart[index].quantity++
+        setCart([...newArray])
+    } else  {
+        const newArray = getCart
+        getCart[index].quantity--
+        if(getCart[index].quantity === 0) {
+            newArray.splice(index, 1)
+        }
+        setCart([...newArray])
+    }
+  }
+
+
+
+  
 
   
   return (
@@ -75,13 +124,13 @@ function App() {
         <div className='flex1'><button onClick={()=>change(2)}>Shop</button></div>
           <div className='flex1 d-flex ali-center just-center'><button onClick={()=>change(3)}>Cart</button> 
           
-          <FaShoppingCart/> <h3 className='pl-10'> {getArray.length}</h3>
+          <FaShoppingCart/> <h3 className='pl-10'> {getCart.length}</h3>
           
         </div>
       </div>
       {getWindow===1 && <Main />}
       {getWindow===2 && <Shop products={products} buyItem={buyItem}/>}  
-      {getWindow===3 && <Cart boughtItems={getArray} sum={getSum}/>}
+      {getWindow===3 && <Cart boughtItems={getArray} sum={(1000-getSum).toFixed(2)} cart = {getCart} getIndex={getIndex} add={addOrRemove}/>}
             
     </div>
     

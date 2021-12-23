@@ -19,7 +19,7 @@ const Shop = ({products, buyItem}) =>{
                     <img src={x.image} alt=""/>
                     <h3>{x.title}</h3>
                     <h3>{x.price}</h3> 
-                    <button onClick={()=>buyItem(index)}> Buy</button>
+                    <button onClick={()=>buyItem(index)}> Add to Cart</button>
                 </div>
 
             )}
