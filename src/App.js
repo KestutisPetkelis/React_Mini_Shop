@@ -1,137 +1,189 @@
-//  ***** su klaidom bet esme masyvo rusiavime ******* !!!!!!!!!!
-
-
+import React from 'react';
 import './App.css';
-import { useState } from 'react';
-import { FaShoppingCart } from "react-icons/fa";
+import { useState, useRef} from 'react';
+// import {useNavigate} from 'react-router-dom'
 
-import Main from './components/Main';
-import Shop from './components/Shop';
-import Cart from './components/Cart';
+// import {BrowserRouter, Routes, Route, Link} from 'react-router-dom'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import Sidebar from './components/Sidebar';
+
+import AllPosts from './pages/AllPosts';
+import CreatePost from './pages/CreatePost';
+import UpdatePost from './pages/UpdatePost';
+
+
 
 function App() {
 
   const divStyle = {
-    width: "100%",
+    width: "100%", 
     height: "100vh",
-    border: "1px solid blue",
+    // border: "1px solid blue",
     marginTop: "0px",
     marginBottom: "10px",
+    marginLeft: "10px",
     paddingRight: "21px",
     backgroundColor: "aliceblue"
    
   };
-
-  const products = [
-    {
-        image: "https://www.smow.com/pics/vt-078-000/a/vitra-panton-chair-dark-lime_zoom.jpg",
-        title: "green chair",
-        price: 35.38
-    },
-    {
-        image: "https://www.barkerandstonehouse.co.uk/media/catalog/product/cache/b72f787c68b0e64bc0f8dc731e354979/b/e/bebochaiblac_1_zoom.jpg",
-        title: "simple chair",
-        price: 19.99
-    },
-    {
-        image: "https://ii.worldmarket.com/fcgi-bin/iipsrv.fcgi?FIF=/images/worldmarket/source/87344_XXX_v1.tif&qlt=50&wid=650&cvt=jpeg",
-        title: "fotelis chair",
-        price: 55
-    },
-    {
-        image: "https://images-na.ssl-images-amazon.com/images/I/41Jgo7WjH1L.jpg",
-        title: "Boss chair",
-        price: 128
-    },
-    {
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Set_of_fourteen_side_chairs_MET_DP110780.jpg/220px-Set_of_fourteen_side_chairs_MET_DP110780.jpg",
-        title: "king chair",
-        price: 88.25
-    },
-  ]
   
-  const [getProducts, setProducts] = useState(products)
-  const [getArray, setArray] = useState([]) // visu itemu, esanciu krepselyje ("cart") masyvas
   
-  const [getIndex, setIndex] =useState([])
-   
-  const [getSum, setSum] = useState(1000)   // turimi pinigai
-  const [getWindow,setWindow] = useState(1) // rodomu langu keitiklis
-  const [getCart, setCart] = useState([])   // atfiltruotu itemu, esanciu krepselyje, masyvas
 
-  const change = (num)  =>{
-    setWindow(num)
-  }
-  function buyItem(index){
-    
-      const newSum = getSum-products[index].price
-      if(newSum >= 0){
-
-        // ***** standartinis visu elementu sudejimas i masyva
-        setArray([...getArray, products[index]])
-        setSum(newSum)
-      
-        setIndex([...getIndex,index]) 
-
-        // **** atrenkam pasikartojamcius elementus su pasikartojimu skaiciumi
-        const currentProduct = getProducts[index] // pasizymim isrinkta produkta
-        const productExists = getCart.find(x => x.title === currentProduct.title) 
-        // pagal unikalu zymeni(pabvadinim a"title") patikrinam ar yra elementas masyva "true/false"
-
-        if(productExists) {           // jeigu yra "true"
-            const otherProducts = getCart.filter(x => x.title !== currentProduct.title) 
-                                      // ismetam produkta is masyvo, kad nesidubliuotu
-            productExists.quantity++  //  kieki padidinam +1
-            setCart([...otherProducts, productExists]) // pridedam elementa i masyva  
-        } else {                      // jeigu nerra "false"
-            currentProduct.quantity = 1   //  objektui pridedam "key" quantity ir nustatom reiksme "1"
-            setCart([...getCart, currentProduct]) // pridedam nauja elementa i masyva
-        }
-
-            
-      
-    } else{
-      alert("You have not enought money")
+  const [allPosts, setAllPosts] = useState([{
+    title: "First Post",
+    description: "This is the first post of all good posts",
+    image: "https://d.newsweek.com/en/full/520858/supermoon-moon-smartphone-photo-picture.jpg",
+    id: 12345,
+    style:{
+      width:"300px",
+      height:"450px",
+      color: "grey",
+      borderRadius: "10px" 
     }
-  }
 
-   // funkcija prideti/atimt elementa is krepselio
-    
-  function addOrRemove(add, index) {
-    if(add) {
-        const newArray = getCart
-        getCart[index].quantity++
-        setCart([...newArray])
-    } else  {
-        const newArray = getCart
-        getCart[index].quantity--
-        if(getCart[index].quantity === 0) {
-            newArray.splice(index, 1)
-        }
-        setCart([...newArray])
+  },
+  { 
+    title: "Second Post",
+    description: "Shalom Israel, privet vsem evrejam!!!",
+    image: "https://pbs.twimg.com/profile_images/1397477621395505156/S8bo0vYS_400x400.jpg",
+    id: 62775,
+    style:{
+      width:"350px",
+      height:"400px",
+      color: "red",
+      borderRadius: "10px" 
     }
   }
 
 
+  ])          // kintamasis postams
+
+  const inputs ={   // apsirasom "input"'us, nors pasiimam juos per "CreatePost" puslapi
+    title:useRef(), // perduodam per {props} kintamaji "inputs" ir f-ja "createPost"
+    description: useRef(),
+    image:useRef(),
+    id: 44444,
+    style:{
+      width: useRef(),
+      height: useRef(),
+      color: useRef(),
+      borderRadius: useRef() 
+    }
+  }
+
+  // Posto sukurimo dalis
+
+  const createPost =()=>{       // sukuriam posta is inputo reiksmiu
+    console.log ("click", allPosts)
+    validate(inputs)
+    const newPost={
+        title: inputs.title.current.value,
+        description: inputs.description.current.value,
+        image: inputs.image.current.value,
+        id: randomIndex(allPosts),  // idedam unikalu indeksa, sugeneruota randomu
+        style:{
+            width: inputs.style.width.current.value+"px",
+            height: inputs.style.height.current.value+"px",
+            color: inputs.style.color.current.value,
+            borderRadius: inputs.style.borderRadius.current.value+"px" 
+        }
+    }
+    console.log ("click again", newPost)
+    setAllPosts([...allPosts, newPost]) // pridedam posta i masyva
+    // isvalom ivedimo laukus
+    inputs.title.current.value=""
+    inputs.description.current.value=""
+    inputs.image.current.value=""
+    inputs.style.width.current.value=0
+    inputs.style.height.current.value=0
+    inputs.style.color.current.value=""
+    inputs.style.borderRadius.current.value=0
+  }
+
+
+  function randomMaxMin(max, min){      // randomas
+    return Math.floor(Math.random() * (max - min + 1)) + min
+  }
+
+  const randomIndex=(allPosts)=>{   // f-ja unikalaus Id generavimui
+    const uniqueId =randomMaxMin(99999,10000)
+    const notUniqueId = allPosts.find(x=> x.id===uniqueId) // grazina reiksme arba undefined
+    if (notUniqueId){         // cia atsiranda rekursija, kadangi "notUniqueId" egzistuoja , vadinasi yra true
+      console.log("tas pats", notUniqueId ,uniqueId)
+      console.log("pabandom is naujo")
+      return (randomIndex(allPosts))    // cia grazinam uniqueId is rekursyvines f-jos
+    }else{        //
+      console.log ("viskas OK", notUniqueId ,uniqueId)
+      return(uniqueId)    // cia grazinamas, jei iskart viskas gerai
+    }
+  }
+
+  // Posto update'o dalis
+
+  const saveUpdatedPost=(id)=>{
+    validate(inputs)
+    //  Sis kodas veikia, jei reikia prideti i GALA (masyvo gale)
+    // const currentPost = allPosts.find(x => x.id===Number(id)) // randam update'inama posta
+    // const otherPosts = allPosts.filter(x=> x.id !==currentPost.id) // ismetam is masyvo, jei reik prideti i GALA
+    const updatedPost={                               // sugeneruojam atnaujinta posta
+      title: inputs.title.current.value,
+      description: inputs.description.current.value,
+      image: inputs.image.current.value,
+      id: Number(id),         // nekeiciam unikalaus indekso
+      style:{
+          width: inputs.style.width.current.value+"px",
+          height: inputs.style.height.current.value+"px",
+          color: inputs.style.color.current.value,
+          borderRadius: inputs.style.borderRadius.current.value+"px" 
+      }
+    }
+
+    const res = allPosts.map(x => (updatedPost.id===x.id)? updatedPost : x) // idedam i ta pacia vieta, kur buvo
+    setAllPosts([...res])               // atnaujinam State tipo kintamaji-masyva
+    // setAllPosts([...otherPosts, updatedPost]) // pridedam posta i masyva i GALA
+
+    
+  }
+
+  // ***ivedimo lauku ("input") validacijos (atitikimo reikalavimams) f-ja
+  const validate = (inputs)=>{
+    console.log ("Kliukst", inputs, inputs.description.current.value.length)
+    if (inputs.description.current.value.length<20 || inputs.description.current.value.length>200
+      ||inputs.title.current.value.length<10 || inputs.title.current.value.length>100
+      || !inputs.image.current.value.includes("http")
+      || inputs.style.width.current.value<1 || inputs.style.width.current.value>999
+      || inputs.style.height.current.value<1 || inputs.style.height.current.value>999
+      || inputs.style.borderRadius.current.value<1 || inputs.style.borderRadius.current.value>99
+      || inputs.style.color.current.value.length<1 || inputs.style.color.current.value.length>20
+
+      )
+      {
+      alert ("Viskas negerai... <20 arba >200 ar panasiai. Vienzo - pradek is naujo")
+      window.location.reload(false)
+    }
+  }
 
   
 
-  
+
+
   return (
-    <div className="App" style={divStyle}>
-      <div className="header d-flex">
-        <div className='flex1'><button onClick={()=>change(1)}>Main</button></div>
-        <div className='flex1'><button onClick={()=>change(2)}>Shop</button></div>
-          <div className='flex1 d-flex ali-center just-center'><button onClick={()=>change(3)}>Cart</button> 
-          
-          <FaShoppingCart/> <h3 className='pl-10'> {getCart.length}</h3>
-          
+    <div style={divStyle} className="App " >
+     
+      <BrowserRouter>
+        <div className="d-flex"> 
+          <Sidebar/>
+       
+
+        <Routes>
+          <Route path="/allposts" element={<AllPosts allposts={allPosts} />}></Route>
+          <Route path="/createpost" element={<CreatePost allposts={allPosts} inputs={inputs} createPost={createPost}/>} ></Route>
+          <Route path="/updatepost/:id" element={<UpdatePost allposts={allPosts} inputs={inputs} saveUpdatedPost={saveUpdatedPost}/>} ></Route>
+        </Routes>
         </div>
-      </div>
-      {getWindow===1 && <Main />}
-      {getWindow===2 && <Shop products={products} buyItem={buyItem}/>}  
-      {getWindow===3 && <Cart boughtItems={getArray} sum={(1000-getSum).toFixed(2)} cart = {getCart} getIndex={getIndex} add={addOrRemove}/>}
-            
+
+      </BrowserRouter>
+      
     </div>
     
     

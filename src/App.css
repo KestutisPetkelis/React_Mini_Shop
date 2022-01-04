@@ -44,6 +44,9 @@
 .column{
   flex-direction: column;
 }
+.column-reverse{
+  flex-direction: column-reverse;
+}
 .f-wrap{
   flex-wrap: wrap;
 }
@@ -86,73 +89,39 @@
 
 /* ******* Classes, Elements ******* */
 
-.card{
-  width: 200px;
-  height: 320px;
-  border: 1px solid blue;
-  margin: 10px;
-  border-radius: 5px;
-  background-color: rgb(73, 154, 224);
+.singlePost{
+  border:1px solid rgb(102, 60, 33);
+  margin: 5px;
+  padding: 5px;
 }
-.card2{
-  width: 90%;
-  height: 200px;
-  border: 1px solid blue;
-  margin: 10px;
-  border-radius: 5px;
-  background-color: rgb(73, 154, 224);
-}
-img {
-  margin: 10px;
-  border-radius: 50%;
-}
-.card img, .card2 img{
+.singlePost img{
   width: 80%;
-  max-height: 162px;
   margin: 10px;
   object-fit: contain;
   border-radius: 5px;
   border:1px solid blue;
 }
-.card h3{
-  margin: 5px 0px;
- 
+textarea{
+  resize: none;
 }
-.card2 img{
-  width:162px;
+.inputField{
+  text-align: left;
+  padding-left: 50px;
 }
-.card2 h3{
-  margin-left: 50px;
-}
-.userInfo{
-  width: 100%;
-}
-button{
-  padding:10px;
-  margin:20px;
-  width: 120px;
-  cursor: pointer;
-}
-.betBtn{
-  border-radius: 5px;
-  border:1px solid blue;
-  padding:10px;
-  margin: 50px;
-  cursor: pointer;
-  background-color: lightgray;
 
+/* **** Padding, Margin **** */
+.pr-20{
+  padding-right: 20px;
 }
-.quiz{
-  margin: 10px 50px;
-  border-radius: 20px;
+.pr-1{
+  padding-right: 1px;
 }
-.quiz2{
-  padding: 10px;
-  border-radius: 40px;
-  box-sizing: border-box;
-  width: 160px;
+.pr-25{
+  padding-right: 25px;
 }
-/* **** Padding, Margin */
-.pl-10{
-  padding-left: 10px;
+.pr-13{
+  padding-right: 13px;
+}
+.pr-19{
+  padding-right: 19px;
 }
